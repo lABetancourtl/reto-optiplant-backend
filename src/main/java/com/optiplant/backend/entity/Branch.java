@@ -20,5 +20,9 @@ public class Branch {
     @Column(unique = true, nullable = false)
     private String name;
 
+    private String address;
+
+    private String phone;
+
     public Branch() {}
 }

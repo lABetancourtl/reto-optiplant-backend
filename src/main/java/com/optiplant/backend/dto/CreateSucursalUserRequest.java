@@ -6,6 +6,8 @@ public record CreateSucursalUserRequest(
         @NotBlank(message = "El usuario es obligatorio")
         String userName,
 
+        String name,
+
         @NotBlank(message = "La contraseña es obligatoria")
         String password,
 

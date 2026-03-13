@@ -37,7 +37,8 @@ public class UserController {
                 .filter(user -> "SUCURSAL".equals(user.getRole()))
                 .collect(Collectors.toList());
         List<SucursalUserResponse> responses = users.stream()
-                .map(user -> new SucursalUserResponse(user.getId(), user.getUsername(), user.getRole(),
+                .map(user -> new SucursalUserResponse(user.getId(), user.getUsername(), user.getName(),
+                        user.getRole(),
                         user.getBranch() != null ? user.getBranch().getId() : null,
                         user.getBranch() != null ? user.getBranch().getName() : null))
                 .collect(Collectors.toList());
@@ -49,7 +50,8 @@ public class UserController {
         User user = userRepository.findById(id)
                 .filter(u -> "SUCURSAL".equals(u.getRole()))
                 .orElseThrow(() -> new RuntimeException("Sucursal user not found"));
-        SucursalUserResponse response = new SucursalUserResponse(user.getId(), user.getUsername(), user.getRole(),
+        SucursalUserResponse response = new SucursalUserResponse(user.getId(), user.getUsername(), user.getName(),
+                user.getRole(),
                 user.getBranch() != null ? user.getBranch().getId() : null,
                 user.getBranch() != null ? user.getBranch().getName() : null);
         return ResponseEntity.ok(response);
@@ -60,6 +62,7 @@ public class UserController {
         // Reuse AuthService register logic, but force role to SUCURSAL
         User user = new User();
         user.setUsername(request.userName());
+        user.setName(request.name());
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole("SUCURSAL");
         if (request.branchId() != null) {
@@ -77,6 +80,7 @@ public class UserController {
                 .filter(u -> "SUCURSAL".equals(u.getRole()))
                 .orElseThrow(() -> new RuntimeException("Sucursal user not found"));
         user.setUsername(request.userName());
+        user.setName(request.name());
         if (request.password() != null && !request.password().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.password()));
         }

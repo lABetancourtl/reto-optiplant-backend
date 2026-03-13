@@ -5,41 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73802b63-918b-4c35-a9d9-ab0d7a75a5d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/CategoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/InventoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/ProductController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/TransferController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ApproveRejectTransferRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ConfirmReceiptRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateCategoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateInventoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateProductRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateSucursalUserRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateTransferRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ProductAvailabilityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ProductResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/SucursalUserResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/TransferStockRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateBranchRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateCategoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateInventoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateProductRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateSucursalUserRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateTransferStatusRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Inventory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Transfer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/TransferStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/InventoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/ProductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/TransferRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/CategoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/InventoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/ProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/TransferService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.lock" afterDir="false" />
@@ -47,15 +12,19 @@
       <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateBranchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateBranchRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateSucursalUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateSucursalUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/SucursalUserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/SucursalUserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateBranchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateBranchRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateSucursalUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateSucursalUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Branch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

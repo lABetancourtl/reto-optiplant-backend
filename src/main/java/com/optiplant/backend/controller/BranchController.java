@@ -38,6 +38,8 @@ public class BranchController {
     public ResponseEntity<Branch> createBranch(@RequestBody CreateBranchRequest request) {
         Branch branch = new Branch();
         branch.setName(request.name());
+        branch.setAddress(request.address());
+        branch.setPhone(request.phone());
         Branch saved = branchRepository.save(branch);
         return ResponseEntity.ok(saved);
     }
@@ -47,6 +49,8 @@ public class BranchController {
         Branch branch = branchRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Branch not found"));
         branch.setName(request.name());
+        branch.setAddress(request.address());
+        branch.setPhone(request.phone());
         Branch updated = branchRepository.save(branch);
         return ResponseEntity.ok(updated);
     }
