@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/security/JwtAuthenticationFilter.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/security/JwtAuthenticationFilter.java" />
+              <option name="updatedContent" value="package com.optiplant.backend.configuration.security;&#10;&#10;import java.io.IOException;&#10;import java.util.List;&#10;&#10;import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;&#10;import org.springframework.security.core.authority.SimpleGrantedAuthority;&#10;import org.springframework.security.core.context.SecurityContextHolder;&#10;import org.springframework.stereotype.Component;&#10;import org.springframework.web.filter.OncePerRequestFilter;&#10;&#10;import io.jsonwebtoken.Claims;&#10;import jakarta.servlet.FilterChain;&#10;import jakarta.servlet.ServletException;&#10;import jakarta.servlet.http.HttpServletRequest;&#10;import jakarta.servlet.http.HttpServletResponse;&#10;&#10;@Component&#10;public class JwtAuthenticationFilter extends OncePerRequestFilter {&#10;&#10;    private final JwtService jwtService;&#10;&#10;    public JwtAuthenticationFilter(JwtService jwtService) {&#10;        this.jwtService = jwtService;&#10;    }&#10;&#10;    @Override&#10;    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)&#10;            throws ServletException, IOException {&#10;&#10;        String authHeader = request.getHeader(&quot;Authorization&quot;);&#10;        if (authHeader != null &amp;&amp; authHeader.startsWith(&quot;Bearer &quot;)) {&#10;            String token = authHeader.substring(7);&#10;            if (jwtService.isTokenValid(token)) {&#10;                Claims claims = jwtService.extractClaims(token);&#10;                String username = claims.getSubject();&#10;                String role = claims.get(&quot;role&quot;, String.class);&#10;&#10;                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(&#10;                        username, null, List.of(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role)));&#10;                SecurityContextHolder.getContext().setAuthentication(auth);&#10;            }&#10;        }&#10;&#10;        filterChain.doFilter(request, response);&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" />
+              <option name="originalContent" value="package com.optiplant.backend.controller;&#10;&#10;import org.springframework.http.ResponseEntity;&#10;import org.springframework.security.access.prepost.PreAuthorize;&#10;import org.springframework.web.bind.annotation.*;&#10;&#10;import com.optiplant.backend.entity.Branch;&#10;import com.optiplant.backend.repository.BranchRepository;&#10;&#10;@RestController&#10;@RequestMapping(&quot;/branches&quot;)&#10;public class BranchController {&#10;&#10;    private final BranchRepository branchRepository;&#10;&#10;    public BranchController(BranchRepository branchRepository) {&#10;        this.branchRepository = branchRepository;&#10;    }&#10;&#10;    @PostMapping&#10;    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)&#10;    public ResponseEntity&lt;Branch&gt; createBranch(@RequestBody CreateBranchRequest request) {&#10;        Branch branch = new Branch();&#10;        branch.setName(request.name());&#10;        Branch saved = branchRepository.save(branch);&#10;        return ResponseEntity.ok(saved);&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.optiplant.backend.controller;&#10;&#10;import org.springframework.http.ResponseEntity;&#10;import org.springframework.security.access.prepost.PreAuthorize;&#10;import org.springframework.web.bind.annotation.*;&#10;&#10;import com.optiplant.backend.entity.Branch;&#10;import com.optiplant.backend.repository.BranchRepository;&#10;import com.optiplant.backend.dto.CreateBranchRequest;&#10;&#10;@RestController&#10;@RequestMapping(&quot;/branches&quot;)&#10;public class BranchController {&#10;&#10;    private final BranchRepository branchRepository;&#10;&#10;    public BranchController(BranchRepository branchRepository) {&#10;        this.branchRepository = branchRepository;&#10;    }&#10;&#10;    @PostMapping&#10;    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)&#10;    public ResponseEntity&lt;Branch&gt; createBranch(@RequestBody CreateBranchRequest request) {&#10;        Branch branch = new Branch();&#10;        branch.setName(request.name());&#10;        Branch saved = branchRepository.save(branch);&#10;        return ResponseEntity.ok(saved);&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
