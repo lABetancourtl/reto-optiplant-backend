@@ -5,24 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73802b63-918b-4c35-a9d9-ab0d7a75a5d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/backend.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/OpenApiConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/configuration/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateBranchRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Branch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/BranchRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/CategoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/InventoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/ProductController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/TransferController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ApproveRejectTransferRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ConfirmReceiptRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateCategoryRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateInventoryRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateProductRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateSucursalUserRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/CreateTransferRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ProductAvailabilityResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/ProductResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/SucursalUserResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/TransferStockRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateBranchRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateCategoryRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateInventoryRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateProductRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateSucursalUserRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/dto/UpdateTransferStatusRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Inventory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/Transfer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/entity/TransferStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/InventoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/repository/TransferRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/CategoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/InventoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/ProductService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/service/TransferService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.3.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,30 +83,33 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="3AtXnOXMb3KnDbbqgYGC81ANvgt" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.Build reto-optiplant-backend.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.BackendApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.Build reto-optiplant-backend.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />

@@ -11,15 +11,6 @@
             </PendingDiffInfo>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/optiplant/backend/controller/BranchController.java" />
-              <option name="originalContent" value="package com.optiplant.backend.controller;&#10;&#10;import org.springframework.http.ResponseEntity;&#10;import org.springframework.security.access.prepost.PreAuthorize;&#10;import org.springframework.web.bind.annotation.*;&#10;&#10;import com.optiplant.backend.entity.Branch;&#10;import com.optiplant.backend.repository.BranchRepository;&#10;&#10;@RestController&#10;@RequestMapping(&quot;/branches&quot;)&#10;public class BranchController {&#10;&#10;    private final BranchRepository branchRepository;&#10;&#10;    public BranchController(BranchRepository branchRepository) {&#10;        this.branchRepository = branchRepository;&#10;    }&#10;&#10;    @PostMapping&#10;    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)&#10;    public ResponseEntity&lt;Branch&gt; createBranch(@RequestBody CreateBranchRequest request) {&#10;        Branch branch = new Branch();&#10;        branch.setName(request.name());&#10;        Branch saved = branchRepository.save(branch);&#10;        return ResponseEntity.ok(saved);&#10;    }&#10;}&#10;" />
-              <option name="updatedContent" value="package com.optiplant.backend.controller;&#10;&#10;import org.springframework.http.ResponseEntity;&#10;import org.springframework.security.access.prepost.PreAuthorize;&#10;import org.springframework.web.bind.annotation.*;&#10;&#10;import com.optiplant.backend.entity.Branch;&#10;import com.optiplant.backend.repository.BranchRepository;&#10;import com.optiplant.backend.dto.CreateBranchRequest;&#10;&#10;@RestController&#10;@RequestMapping(&quot;/branches&quot;)&#10;public class BranchController {&#10;&#10;    private final BranchRepository branchRepository;&#10;&#10;    public BranchController(BranchRepository branchRepository) {&#10;        this.branchRepository = branchRepository;&#10;    }&#10;&#10;    @PostMapping&#10;    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)&#10;    public ResponseEntity&lt;Branch&gt; createBranch(@RequestBody CreateBranchRequest request) {&#10;        Branch branch = new Branch();&#10;        branch.setName(request.name());&#10;        Branch saved = branchRepository.save(branch);&#10;        return ResponseEntity.ok(saved);&#10;    }&#10;}" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
       </map>
     </option>
   </component>
