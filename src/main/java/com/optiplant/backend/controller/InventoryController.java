@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.optiplant.backend.dto.CreateInventoryRequest;
@@ -76,5 +77,12 @@ public class InventoryController {
                 .map(inv -> new ProductAvailabilityResponse(inv.getBranch().getId(), inv.getBranch().getName(), inv.getQuantity()))
                 .toList();
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/my-branch")
+    @PreAuthorize("hasRole('SUCURSAL')")
+    public ResponseEntity<List<Inventory>> getMyBranchInventory(Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(inventoryService.getInventoriesByUsername(username));
     }
 }

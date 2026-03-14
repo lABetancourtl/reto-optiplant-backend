@@ -2,6 +2,8 @@ package com.optiplant.backend.service;
 
 import java.util.List;
 
+import com.optiplant.backend.entity.User;
+import com.optiplant.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +20,15 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final BranchRepository branchRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    public InventoryService(InventoryRepository inventoryRepository, BranchRepository branchRepository, ProductRepository productRepository) {
+
+    public InventoryService(InventoryRepository inventoryRepository, BranchRepository branchRepository,
+                            ProductRepository productRepository, UserRepository userRepository) {
         this.inventoryRepository = inventoryRepository;
         this.branchRepository = branchRepository;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Inventory> getAllInventories() {
@@ -101,5 +107,11 @@ public class InventoryService {
 
         inventoryRepository.save(sourceInventory);
         inventoryRepository.save(destInventory);
+    }
+
+    public List<Inventory> getInventoriesByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return inventoryRepository.findByBranchId(user.getBranch().getId());
     }
 }
