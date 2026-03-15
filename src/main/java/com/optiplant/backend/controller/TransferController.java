@@ -46,7 +46,7 @@ public class TransferController {
     public ResponseEntity<Transfer> createTransferRequest(@RequestBody CreateTransferRequest request, Principal principal) {
         Long userId = userRepository.findByUsername(principal.getName()).get().getId();
         Transfer transfer = transferService.createTransferRequest(request.sourceBranchId(), request.destBranchId(),
-                                                                  request.productId(), request.quantity(), userId);
+                request.productId(), request.quantity(), userId);
         return ResponseEntity.ok(transfer);
     }
 
@@ -93,5 +93,14 @@ public class TransferController {
         User user = userRepository.findById(userId).get();
         Long branchId = user.getBranch().getId();
         return ResponseEntity.ok(transferService.getTransfersByDestBranch(branchId));
+    }
+
+    @GetMapping("/source-branch")
+    @PreAuthorize("hasRole('SUCURSAL')")
+    public ResponseEntity<List<Transfer>> getTransfersBySourceBranch(Principal principal) {
+        Long userId = userRepository.findByUsername(principal.getName()).get().getId();
+        User user = userRepository.findById(userId).get();
+        Long branchId = user.getBranch().getId();
+        return ResponseEntity.ok(transferService.getTransfersBySourceBranch(branchId));
     }
 }

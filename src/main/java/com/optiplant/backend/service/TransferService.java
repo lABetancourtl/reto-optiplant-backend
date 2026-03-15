@@ -40,10 +40,12 @@ public class TransferService {
     }
 
     public Transfer getTransferById(Long id) {
-        return transferRepository.findById(id).orElseThrow(() -> new RuntimeException("Transfer not found"));
+        return transferRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transfer not found"));
     }
 
-    public Transfer createTransferRequest(Long sourceBranchId, Long destBranchId, Long productId, Integer quantity, Long requestedById) {
+    public Transfer createTransferRequest(Long sourceBranchId, Long destBranchId, Long productId,
+                                          Integer quantity, Long requestedById) {
         Branch sourceBranch = branchRepository.findById(sourceBranchId)
                 .orElseThrow(() -> new RuntimeException("Source branch not found"));
         Branch destBranch = branchRepository.findById(destBranchId)
@@ -79,14 +81,7 @@ public class TransferService {
         transfer.setStatus(newStatus);
 
         if (newStatus == TransferStatus.APPROVED) {
-            // Generate tracking code
             transfer.setTrackingCode(UUID.randomUUID().toString());
-        } else if (newStatus == TransferStatus.SENT) {
-            // Move stock from source to dest
-            inventoryService.transferStock(transfer.getSourceBranch().getId(), transfer.getDestBranch().getId(),
-                                           transfer.getProduct().getId(), transfer.getQuantity());
-        } else if (newStatus == TransferStatus.RECEIVED) {
-            // Already moved on SENT, but confirm
         }
 
         return transferRepository.save(transfer);
@@ -112,6 +107,7 @@ public class TransferService {
         return transferRepository.findByRequestedById(userId);
     }
 
+    @Transactional
     public Transfer approveOrRejectTransfer(Long id, TransferStatus status, String justification, Long userId) {
         Transfer transfer = getTransferById(id);
 
@@ -122,56 +118,64 @@ public class TransferService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!"SUCURSAL".equals(user.getRole()) || !transfer.getDestBranch().getId().equals(user.getBranch().getId())) {
-            throw new RuntimeException("Only the destination branch SUCURSAL user can approve or reject");
+        // La sucursal ORIGEN (B) es quien decide si acepta o rechaza enviar el producto
+        if (!"SUCURSAL".equals(user.getRole()) ||
+                !transfer.getSourceBranch().getId().equals(user.getBranch().getId())) {
+            throw new RuntimeException("Only the source branch user can approve or reject this transfer");
         }
 
         transfer.setStatus(status);
+
         if (status == TransferStatus.REJECTED) {
             if (justification == null || justification.trim().isEmpty()) {
                 throw new RuntimeException("Justification is required for rejection");
             }
             transfer.setJustification(justification);
         } else if (status == TransferStatus.APPROVED) {
+            // Generar código guía de la transportadora
             transfer.setTrackingCode(UUID.randomUUID().toString());
         }
 
         return transferRepository.save(transfer);
     }
 
+    @Transactional
     public Transfer confirmReceipt(String trackingCode, Integer receivedQuantity, Long userId) {
         Transfer transfer = transferRepository.findAll().stream()
                 .filter(t -> trackingCode.equals(t.getTrackingCode()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Transfer with tracking code not found"));
 
-        if (transfer.getStatus() != TransferStatus.APPROVED && transfer.getStatus() != TransferStatus.SENT) {
-            throw new RuntimeException("Transfer is not in APPROVED or SENT status");
+        if (transfer.getStatus() != TransferStatus.APPROVED) {
+            throw new RuntimeException("Transfer is not in APPROVED status");
         }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!"SUCURSAL".equals(user.getRole()) || !transfer.getSourceBranch().getId().equals(user.getBranch().getId())) {
-            throw new RuntimeException("Only the source branch SUCURSAL user can confirm receipt");
+        // La sucursal DESTINO (A) es quien confirma que recibió la mercancía
+        if (!"SUCURSAL".equals(user.getRole()) ||
+                !transfer.getDestBranch().getId().equals(user.getBranch().getId())) {
+            throw new RuntimeException("Only the destination branch user can confirm receipt");
         }
 
         if (receivedQuantity > transfer.getQuantity()) {
             throw new RuntimeException("Received quantity cannot exceed requested quantity");
         }
 
+        if (receivedQuantity < 1) {
+            throw new RuntimeException("Received quantity must be at least 1");
+        }
+
         transfer.setStatus(TransferStatus.RECEIVED);
 
-        // Adjust inventory if shortage
-        if (receivedQuantity < transfer.getQuantity()) {
-            // Shortage: reduce from dest inventory or log
-            // For simplicity, assume inventory was already moved on SENT, but adjust if partial
-            // Here, since SENT moves full, perhaps don't move until RECEIVED, but user said on SENT.
-            // To handle, perhaps move on RECEIVED, and adjust for shortages.
-            // But for now, mark as received, and log shortage.
-        } else {
-            // Full receipt, inventory already moved on SENT
-        }
+        // Mover inventario: descontar de sucursal B (origen) y agregar a sucursal A (destino)
+        inventoryService.transferStock(
+                transfer.getSourceBranch().getId(),
+                transfer.getDestBranch().getId(),
+                transfer.getProduct().getId(),
+                receivedQuantity
+        );
 
         return transferRepository.save(transfer);
     }

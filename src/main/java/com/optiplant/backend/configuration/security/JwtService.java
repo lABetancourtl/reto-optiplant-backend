@@ -20,6 +20,8 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("role", user.getRole())
+                .claim("branchId", user.getBranch() != null ? user.getBranch().getId() : null)
+                .claim("branchName", user.getBranch() != null ? user.getBranch().getName() : null)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
