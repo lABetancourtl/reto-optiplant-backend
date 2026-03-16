@@ -2,8 +2,10 @@ package com.optiplant.backend.service;
 
 import java.util.List;
 
+import com.optiplant.backend.dto.InventoryEventDTO;
 import com.optiplant.backend.entity.User;
 import com.optiplant.backend.repository.UserRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +23,18 @@ public class InventoryService {
     private final BranchRepository branchRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-
-    public InventoryService(InventoryRepository inventoryRepository, BranchRepository branchRepository,
-                            ProductRepository productRepository, UserRepository userRepository) {
+    public InventoryService(InventoryRepository inventoryRepository,
+                            BranchRepository branchRepository,
+                            ProductRepository productRepository,
+                            UserRepository userRepository,
+                            SimpMessagingTemplate messagingTemplate) {
         this.inventoryRepository = inventoryRepository;
         this.branchRepository = branchRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     public List<Inventory> getAllInventories() {
@@ -42,7 +48,8 @@ public class InventoryService {
     }
 
     public Inventory getInventoryById(Long id) {
-        return inventoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Inventory not found"));
+        return inventoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
     }
 
     public Inventory createInventory(Long branchId, Long productId, Integer quantity) {
@@ -60,13 +67,19 @@ public class InventoryService {
         inventory.setBranch(branch);
         inventory.setProduct(product);
         inventory.setQuantity(quantity);
-        return inventoryRepository.save(inventory);
+        Inventory saved = inventoryRepository.save(inventory);
+
+        emitInventoryEvent(saved, "UPDATED");
+        return saved;
     }
 
     public Inventory updateInventory(Long id, Integer quantity) {
         Inventory inventory = getInventoryById(id);
         inventory.setQuantity(quantity);
-        return inventoryRepository.save(inventory);
+        Inventory updated = inventoryRepository.save(inventory);
+
+        emitInventoryEvent(updated, "UPDATED");
+        return updated;
     }
 
     public void deleteInventory(Long id) {
@@ -107,11 +120,33 @@ public class InventoryService {
 
         inventoryRepository.save(sourceInventory);
         inventoryRepository.save(destInventory);
+
+        // Emitir eventos en tiempo real — sucursal origen descuenta
+        emitInventoryEvent(sourceInventory, "TRANSFER_OUT");
+        // Sucursal destino recibe
+        emitInventoryEvent(destInventory, "TRANSFER_IN");
     }
 
     public List<Inventory> getInventoriesByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         return inventoryRepository.findByBranchId(user.getBranch().getId());
+    }
+
+    private void emitInventoryEvent(Inventory inventory, String type) {
+        InventoryEventDTO event = new InventoryEventDTO(
+                inventory.getId(),
+                inventory.getBranch().getId(),
+                inventory.getBranch().getName(),
+                inventory.getProduct().getId(),
+                inventory.getProduct().getName(),
+                inventory.getQuantity(),
+                type
+        );
+        // Notificar a la sucursal específica
+        messagingTemplate.convertAndSend(
+                "/topic/inventory/branch/" + inventory.getBranch().getId(), event);
+        // Notificar al admin (ve todo)
+        messagingTemplate.convertAndSend("/topic/inventory/all", event);
     }
 }
