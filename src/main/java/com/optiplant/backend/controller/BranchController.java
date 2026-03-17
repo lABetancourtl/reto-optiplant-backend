@@ -10,6 +10,7 @@ import com.optiplant.backend.entity.Branch;
 import com.optiplant.backend.repository.BranchRepository;
 import com.optiplant.backend.dto.CreateBranchRequest;
 import com.optiplant.backend.dto.UpdateBranchRequest;
+import com.optiplant.backend.service.InventoryService;
 
 @RestController
 @RequestMapping("/branches")
@@ -17,9 +18,11 @@ import com.optiplant.backend.dto.UpdateBranchRequest;
 public class BranchController {
 
     private final BranchRepository branchRepository;
+    private final InventoryService inventoryService;
 
-    public BranchController(BranchRepository branchRepository) {
+    public BranchController(BranchRepository branchRepository, InventoryService inventoryService) {
         this.branchRepository = branchRepository;
+        this.inventoryService = inventoryService;
     }
 
     @GetMapping
@@ -41,6 +44,7 @@ public class BranchController {
         branch.setAddress(request.address());
         branch.setPhone(request.phone());
         Branch saved = branchRepository.save(branch);
+        inventoryService.initializeInventoryForBranch(saved);
         return ResponseEntity.ok(saved);
     }
 

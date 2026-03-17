@@ -133,6 +133,39 @@ public class InventoryService {
         return inventoryRepository.findByBranchId(user.getBranch().getId());
     }
 
+    @Transactional
+    public void initializeInventoryForAllBranches() {
+        List<Branch> branches = branchRepository.findAll();
+        for (Branch branch : branches) {
+            initializeInventoryForBranch(branch);
+        }
+    }
+
+    @Transactional
+    public void initializeInventoryForBranch(Branch branch) {
+        List<Product> products = productRepository.findAll();
+        for (Product product : products) {
+            boolean exists = inventoryRepository.findByBranchAndProduct(branch, product).isPresent();
+            if (exists) {
+                continue;
+            }
+
+            Inventory inventory = new Inventory();
+            inventory.setBranch(branch);
+            inventory.setProduct(product);
+            inventory.setQuantity(calculateInitialQuantity(branch.getId(), product.getId()));
+            inventoryRepository.save(inventory);
+        }
+    }
+
+    private int calculateInitialQuantity(Long branchId, Long productId) {
+        long seed = (branchId * 37L) + (productId * 13L);
+        if (seed % 6 == 0) {
+            return 0;
+        }
+        return (int) (5 + (seed % 56));
+    }
+
     private void emitInventoryEvent(Inventory inventory, String type) {
         InventoryEventDTO event = new InventoryEventDTO(
                 inventory.getId(),
