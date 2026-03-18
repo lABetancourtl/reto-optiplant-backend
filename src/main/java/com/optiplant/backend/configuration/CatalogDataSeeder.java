@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@ConditionalOnProperty(name = "app.seed.catalog.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "app.seed.catalog.enabled", havingValue = "false")
 public class CatalogDataSeeder implements ApplicationRunner {
 
     private final CategoryRepository categoryRepository;

@@ -22,7 +22,7 @@ public class Transfer {
     private TransferStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "source_branch_id", nullable = false)
+    @JoinColumn(name = "source_branch_id")
     private Branch sourceBranch;
 
     @ManyToOne

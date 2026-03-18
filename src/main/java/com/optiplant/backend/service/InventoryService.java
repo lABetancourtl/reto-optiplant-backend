@@ -127,6 +127,32 @@ public class InventoryService {
         emitInventoryEvent(destInventory, "TRANSFER_IN");
     }
 
+    @Transactional
+    public void increaseStock(Long destBranchId, Long productId, Integer quantity) {
+        if (quantity <= 0) {
+            throw new RuntimeException("Quantity must be positive");
+        }
+
+        Branch destBranch = branchRepository.findById(destBranchId)
+                .orElseThrow(() -> new RuntimeException("Destination branch not found"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Inventory destInventory = inventoryRepository.findByBranchAndProduct(destBranch, product)
+                .orElseGet(() -> {
+                    Inventory newInv = new Inventory();
+                    newInv.setBranch(destBranch);
+                    newInv.setProduct(product);
+                    newInv.setQuantity(0);
+                    return inventoryRepository.save(newInv);
+                });
+
+        destInventory.setQuantity(destInventory.getQuantity() + quantity);
+        Inventory saved = inventoryRepository.save(destInventory);
+
+        emitInventoryEvent(saved, "TRANSFER_IN");
+    }
+
     public List<Inventory> getInventoriesByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

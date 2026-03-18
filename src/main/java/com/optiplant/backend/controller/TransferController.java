@@ -3,12 +3,14 @@ package com.optiplant.backend.controller;
 import java.security.Principal;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.optiplant.backend.dto.ApproveRejectTransferRequest;
 import com.optiplant.backend.dto.ConfirmReceiptRequest;
+import com.optiplant.backend.dto.CreateInboundTransferRequest;
 import com.optiplant.backend.dto.CreateTransferRequest;
 import com.optiplant.backend.dto.UpdateTransferStatusRequest;
 import com.optiplant.backend.entity.Transfer;
@@ -42,12 +44,27 @@ public class TransferController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('SUCURSAL')")
-    public ResponseEntity<Transfer> createTransferRequest(@RequestBody CreateTransferRequest request, Principal principal) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
+    public ResponseEntity<Transfer> createTransferRequest(@Valid @RequestBody CreateTransferRequest request, Principal principal) {
         Long userId = userRepository.findByUsername(principal.getName()).get().getId();
         Transfer transfer = transferService.createTransferRequest(request.sourceBranchId(), request.destBranchId(),
                 request.productId(), request.quantity(), userId);
         return ResponseEntity.ok(transfer);
+    }
+
+    @PostMapping("/inbound")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Transfer>> createInboundTransfers(@Valid @RequestBody CreateInboundTransferRequest request,
+                                                                 Principal principal) {
+        Long userId = userRepository.findByUsername(principal.getName()).orElseThrow().getId();
+        List<Transfer> transfers = transferService.createInboundTransfers(
+                request.productId(),
+                request.quantity(),
+                request.destinationBranchIds(),
+                request.allBranches(),
+                userId
+        );
+        return ResponseEntity.ok(transfers);
     }
 
     @PutMapping("/{id}/status")

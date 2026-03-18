@@ -1,6 +1,7 @@
 package com.optiplant.backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,4 +18,6 @@ public interface TransferRepository extends JpaRepository<Transfer, Long> {
     List<Transfer> findByStatus(TransferStatus status);
 
     List<Transfer> findByRequestedById(Long userId);
+
+    Optional<Transfer> findByTrackingCode(String trackingCode);
 }

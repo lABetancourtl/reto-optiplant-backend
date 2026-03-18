@@ -17,9 +17,14 @@ public class JwtService {
 
     public String generateToken(User user){
 
+        String role = user.getRole() == null ? "" : user.getRole().trim().toUpperCase();
+        if (role.startsWith("ROLE_")) {
+            role = role.substring(5);
+        }
+
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", user.getRole())
+                .claim("role", role)
                 .claim("branchId", user.getBranch() != null ? user.getBranch().getId() : null)
                 .claim("branchName", user.getBranch() != null ? user.getBranch().getName() : null)
                 .setIssuedAt(new Date())

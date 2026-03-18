@@ -3,7 +3,6 @@ package com.optiplant.backend.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -24,5 +23,17 @@ public class Branch {
 
     private String phone;
 
-    public Branch() {}
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean requiresValidation;
+
+    public Branch() {
+        this.requiresValidation = true;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (requiresValidation == null) {
+            requiresValidation = true;
+        }
+    }
 }

@@ -1,10 +1,10 @@
 package com.optiplant.backend.configuration.security;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,9 +19,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final JwtRoleConverter jwtRoleConverter;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService, JwtRoleConverter jwtRoleConverter) {
         this.jwtService = jwtService;
+        this.jwtRoleConverter = jwtRoleConverter;
     }
 
     @Override
@@ -34,10 +36,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtService.isTokenValid(token)) {
                 Claims claims = jwtService.extractClaims(token);
                 String username = claims.getSubject();
-                String role = claims.get("role", String.class);
+                Collection<? extends GrantedAuthority> authorities = jwtRoleConverter.convert(claims);
+
+                if (authorities == null || authorities.isEmpty()) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        username, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+                        username, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
