@@ -38,14 +38,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = claims.getSubject();
                 Collection<? extends GrantedAuthority> authorities = jwtRoleConverter.convert(claims);
 
-                if (authorities == null || authorities.isEmpty()) {
-                    filterChain.doFilter(request, response);
-                    return;
+                if (username != null && !username.isBlank() && authorities != null && !authorities.isEmpty()) {
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                            username,
+                            null,
+                            authorities
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
 

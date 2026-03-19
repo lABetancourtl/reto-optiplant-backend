@@ -184,6 +184,23 @@ public class InventoryService {
         }
     }
 
+    @Transactional
+    public void initializeInventoryForBranchWithZeroStock(Branch branch) {
+        List<Product> products = productRepository.findAll();
+        for (Product product : products) {
+            boolean exists = inventoryRepository.findByBranchAndProduct(branch, product).isPresent();
+            if (exists) {
+                continue;
+            }
+
+            Inventory inventory = new Inventory();
+            inventory.setBranch(branch);
+            inventory.setProduct(product);
+            inventory.setQuantity(0);
+            inventoryRepository.save(inventory);
+        }
+    }
+
     private int calculateInitialQuantity(Long branchId, Long productId) {
         long seed = (branchId * 37L) + (productId * 13L);
         if (seed % 6 == 0) {

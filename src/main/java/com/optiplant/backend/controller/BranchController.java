@@ -44,7 +44,7 @@ public class BranchController {
         branch.setAddress(request.address());
         branch.setPhone(request.phone());
         Branch saved = branchRepository.save(branch);
-        inventoryService.initializeInventoryForBranch(saved);
+        inventoryService.initializeInventoryForBranchWithZeroStock(saved);
         return ResponseEntity.ok(saved);
     }
 
