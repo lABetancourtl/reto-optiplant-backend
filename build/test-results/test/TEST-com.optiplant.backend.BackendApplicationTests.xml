@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.optiplant.backend.BackendApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-03-19T03:54:07.871Z" hostname="ABetancourt" time="9.232">
+<testsuite name="com.optiplant.backend.BackendApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-03-19T16:05:23.978Z" hostname="ABetancourt" time="8.199">
   <properties/>
-  <testcase name="contextLoads()" classname="com.optiplant.backend.BackendApplicationTests" time="0.464"/>
-  <system-out><![CDATA[22:54:08.056 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.optiplant.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-22:54:08.184 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.optiplant.backend.BackendApplication for test class com.optiplant.backend.BackendApplicationTests
+  <testcase name="contextLoads()" classname="com.optiplant.backend.BackendApplicationTests" time="0.368"/>
+  <system-out><![CDATA[11:05:24.150 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.optiplant.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:05:24.258 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.optiplant.backend.BackendApplication for test class com.optiplant.backend.BackendApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -14,17 +14,17 @@
 
  :: Spring Boot ::                (v4.0.3)
 
-2026-03-18T22:54:08.664-05:00  INFO 80354 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 17.0.18 with PID 80354 (started by betancourt in /home/betancourt/Anderson Work/reto-optiplant-backend)
-2026-03-18T22:54:08.667-05:00  INFO 80354 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : The following 1 profile is active: "local"
-2026-03-18T22:54:09.740-05:00  INFO 80354 --- [backend] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-03-18T22:54:09.831-05:00  INFO 80354 --- [backend] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 10 JPA repository interfaces.
-2026-03-18T22:54:10.536-05:00  INFO 80354 --- [backend] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-03-18T22:54:10.619-05:00  INFO 80354 --- [backend] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
-2026-03-18T22:54:11.151-05:00  INFO 80354 --- [backend] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-03-18T22:54:11.196-05:00  INFO 80354 --- [backend] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-03-18T22:54:11.583-05:00  INFO 80354 --- [backend] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@706690e1
-2026-03-18T22:54:11.586-05:00  INFO 80354 --- [backend] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-03-18T22:54:11.673-05:00  INFO 80354 --- [backend] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-03-19T11:05:24.661-05:00  INFO 32263 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 17.0.18 with PID 32263 (started by betancourt in /home/betancourt/Anderson Work/reto-optiplant-backend)
+2026-03-19T11:05:24.662-05:00  INFO 32263 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : The following 1 profile is active: "local"
+2026-03-19T11:05:25.548-05:00  INFO 32263 --- [backend] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-19T11:05:25.618-05:00  INFO 32263 --- [backend] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 12 JPA repository interfaces.
+2026-03-19T11:05:26.188-05:00  INFO 32263 --- [backend] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-19T11:05:26.249-05:00  INFO 32263 --- [backend] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-19T11:05:26.697-05:00  INFO 32263 --- [backend] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-19T11:05:26.736-05:00  INFO 32263 --- [backend] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-19T11:05:27.016-05:00  INFO 32263 --- [backend] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4270705f
+2026-03-19T11:05:27.019-05:00  INFO 32263 --- [backend] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-19T11:05:27.082-05:00  INFO 32263 --- [backend] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [jdbc:postgresql://localhost:5432/optiplant]
 	Database driver: PostgreSQL JDBC Driver
 	Database dialect: PostgreSQLDialect
@@ -36,20 +36,20 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-03-18T22:54:12.819-05:00  INFO 80354 --- [backend] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-18T22:54:12.912-05:00  INFO 80354 --- [backend] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-03-18T22:54:13.015-05:00  INFO 80354 --- [backend] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-03-18T22:54:15.251-05:00  WARN 80354 --- [backend] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
+2026-03-19T11:05:28.147-05:00  INFO 32263 --- [backend] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-19T11:05:28.240-05:00  INFO 32263 --- [backend] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-19T11:05:28.321-05:00  INFO 32263 --- [backend] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-19T11:05:30.722-05:00  WARN 32263 --- [backend] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 1eac79d7-3cde-422d-b12e-ca1467be816f
+Using generated security password: 348ad5fd-b168-4410-81e5-d7d0dddf11bb
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-03-18T22:54:15.263-05:00  INFO 80354 --- [backend] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-03-18T22:54:16.072-05:00  INFO 80354 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
-2026-03-18T22:54:16.073-05:00  INFO 80354 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7933293f]]
-2026-03-18T22:54:16.074-05:00  INFO 80354 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
-2026-03-18T22:54:16.083-05:00  INFO 80354 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : Started BackendApplicationTests in 7.747 seconds (process running for 9.018)
+2026-03-19T11:05:30.729-05:00  INFO 32263 --- [backend] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-19T11:05:31.370-05:00  INFO 32263 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-03-19T11:05:31.371-05:00  INFO 32263 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6475bf8e]]
+2026-03-19T11:05:31.372-05:00  INFO 32263 --- [backend] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-03-19T11:05:31.379-05:00  INFO 32263 --- [backend] [    Test worker] c.o.backend.BackendApplicationTests      : Started BackendApplicationTests in 6.983 seconds (process running for 8.168)
 Hibernate: 
     select
         b1_0.id,
@@ -1275,7 +1275,7 @@ Hibernate:
     where
         i1_0.branch_id=? 
         and i1_0.product_id=?
-2026-03-18T22:54:16.623-05:00  INFO 80354 --- [backend] [    Test worker] c.o.b.c.TransferSchemaMigration          : Schema update aplicada: transfers.source_branch_id ahora permite null para inbound
+2026-03-19T11:05:31.800-05:00  INFO 32263 --- [backend] [    Test worker] c.o.b.c.TransferSchemaMigration          : Schema update aplicada: transfers.source_branch_id ahora permite null para inbound
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
