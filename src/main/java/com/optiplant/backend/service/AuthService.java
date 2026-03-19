@@ -2,6 +2,8 @@ package com.optiplant.backend.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.optiplant.backend.dto.LoginRequest;
 import com.optiplant.backend.dto.LoginResponse;
@@ -51,10 +53,10 @@ public class AuthService {
 
         User user = userRepository
                 .findByUsername(request.userName())
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contrasena invalida"));
 
         if(!passwordEncoder.matches(request.password(), user.getPassword())){
-            throw new RuntimeException("Invalid credentials");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contrasena invalida");
         }
 
         String token = jwtService.generateToken(user);
