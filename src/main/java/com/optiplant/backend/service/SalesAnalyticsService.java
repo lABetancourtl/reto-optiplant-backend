@@ -16,6 +16,27 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Servicio para la obtención de métricas y análisis de ventas.
+ * Proporciona métodos para consultar resúmenes globales, por sucursal, productos destacados,
+ * ventas por sucursal y series temporales de ventas.
+ * Utilizado por los controladores para endpoints de analítica y reportes.
+ *
+ * <p>
+ * Principales métodos:
+ * <ul>
+ *   <li>getGlobalSalesSummary(): Resumen global de ventas.</li>
+ *   <li>getSalesSummaryByBranch(): Resumen de ventas por sucursal.</li>
+ *   <li>getTopBranchForProduct(Long productId): Sucursal con más ventas de un producto.</li>
+ *   <li>getSalesByBranchForProduct(Long productId): Ventas de un producto por sucursal.</li>
+ *   <li>getTopProductsByBranch(Long branchId, Integer limit): Productos más vendidos por sucursal.</li>
+ *   <li>getSalesByBranchTimeSeries(TimeGranularity granularity, LocalDate fromDate, LocalDate toDate, List<Long> branchIds): Serie temporal de ventas por sucursal.</li>
+ * </ul>
+ * </p>
+ *
+ * @author Optiplant Backend
+ * @since 2024
+ */
 @Service
 public class SalesAnalyticsService {
 
@@ -34,16 +55,33 @@ public class SalesAnalyticsService {
         this.branchRepository = branchRepository;
     }
 
+    /**
+     * Obtiene el resumen global de ventas (total vendido y cantidad de ventas).
+     *
+     * @return Respuesta con monto total y cantidad de ventas.
+     */
     public GlobalSalesSummaryResponse getGlobalSalesSummary() {
         Double totalAmount = saleRepository.sumGlobalSalesAmount();
         Long totalSales = saleRepository.countGlobalSales();
         return new GlobalSalesSummaryResponse(totalAmount, totalSales);
     }
 
+    /**
+     * Obtiene el resumen de ventas por sucursal.
+     *
+     * @return Lista de resúmenes por sucursal.
+     */
     public List<BranchSalesSummaryResponse> getSalesSummaryByBranch() {
         return saleRepository.getSalesSummaryByBranch();
     }
 
+    /**
+     * Obtiene la sucursal con más ventas para un producto.
+     *
+     * @param productId Identificador del producto.
+     * @return Respuesta con datos de la sucursal y ventas.
+     * @throws RuntimeException si el producto no existe.
+     */
     public TopBranchForProductResponse getTopBranchForProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
@@ -64,12 +102,27 @@ public class SalesAnalyticsService {
         );
     }
 
+    /**
+     * Obtiene las ventas de un producto por sucursal.
+     *
+     * @param productId Identificador del producto.
+     * @return Lista de ventas por sucursal.
+     * @throws RuntimeException si el producto no existe.
+     */
     public List<ProductBranchSalesResponse> getSalesByBranchForProduct(Long productId) {
         productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         return saleItemRepository.getSalesByBranchForProduct(productId);
     }
 
+    /**
+     * Obtiene los productos más vendidos por sucursal.
+     *
+     * @param branchId Identificador de la sucursal.
+     * @param limit Límite de productos a consultar.
+     * @return Lista de productos más vendidos.
+     * @throws RuntimeException si la sucursal no existe.
+     */
     public List<BranchTopProductResponse> getTopProductsByBranch(Long branchId, Integer limit) {
         branchRepository.findById(branchId)
                 .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
@@ -78,6 +131,16 @@ public class SalesAnalyticsService {
         return saleItemRepository.getTopProductsByBranch(branchId, PageRequest.of(0, resolvedLimit));
     }
 
+    /**
+     * Obtiene la serie temporal de ventas por sucursal.
+     *
+     * @param granularity Granularidad de tiempo (día, semana, mes, año).
+     * @param fromDate Fecha de inicio.
+     * @param toDate Fecha de fin.
+     * @param branchIds Lista de sucursales a consultar.
+     * @return Respuesta con series temporales de ventas.
+     * @throws RuntimeException si el rango de fechas es inválido.
+     */
     public SalesByBranchTimeSeriesResponse getSalesByBranchTimeSeries(TimeGranularity granularity,
                                                                        LocalDate fromDate,
                                                                        LocalDate toDate,

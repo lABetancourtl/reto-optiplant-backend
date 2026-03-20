@@ -13,6 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio para operaciones de sucursal: ventas, devoluciones y cambios de productos.
+ * Permite a usuarios SUCURSAL registrar ventas, realizar devoluciones y cambios, y consultar ventas propias.
+ * Aplica reglas de negocio como validación de stock, tiempo máximo para devoluciones/cambios, y control de excedentes.
+ * Todas las operaciones afectan el inventario de la sucursal.
+ */
 @Service
 public class BranchOperationsService {
 
@@ -45,6 +51,13 @@ public class BranchOperationsService {
         this.maxReturnHours = maxReturnHours;
     }
 
+    /**
+     * Registra una venta en la sucursal del usuario.
+     * Valida stock disponible, descuenta inventario y registra los items vendidos.
+     * @param username Usuario SUCURSAL que realiza la venta.
+     * @param request Detalle de la venta (productos y cantidades).
+     * @return Venta registrada con total calculado.
+     */
     @Transactional
     public Sale createSale(String username, CreateSaleRequest request) {
         User user = getSucursalUser(username);
@@ -84,6 +97,13 @@ public class BranchOperationsService {
         return saleRepository.save(sale);
     }
 
+    /**
+     * Registra una devolución de producto.
+     * Valida tiempo máximo, cantidad disponible y actualiza inventario.
+     * @param username Usuario SUCURSAL.
+     * @param request Detalle de la devolución (saleItemId, cantidad, motivo).
+     * @return Devolución registrada.
+     */
     @Transactional
     public ProductReturn createReturn(String username, CreateProductReturnRequest request) {
         User user = getSucursalUser(username);
@@ -109,6 +129,14 @@ public class BranchOperationsService {
         return productReturnRepository.save(productReturn);
     }
 
+    /**
+     * Registra un cambio de producto por otro de mayor valor.
+     * Valida tiempo máximo, cantidad disponible, diferencia de precio y pago de excedente.
+     * Actualiza inventario de ambos productos.
+     * @param username Usuario SUCURSAL.
+     * @param request Detalle del cambio (saleItemId, newProductId, cantidad, paidAmount, nota).
+     * @return Cambio registrado.
+     */
     @Transactional
     public ProductExchange createExchange(String username, CreateProductExchangeRequest request) {
         User user = getSucursalUser(username);
@@ -164,11 +192,23 @@ public class BranchOperationsService {
         return productExchangeRepository.save(exchange);
     }
 
+    /**
+     * Obtiene las ventas realizadas por la sucursal del usuario.
+     * @param username Usuario SUCURSAL.
+     * @return Lista de ventas ordenadas por fecha descendente.
+     */
     public List<Sale> getMyBranchSales(String username) {
         User user = getSucursalUser(username);
         return saleRepository.findByBranchIdOrderByCreatedAtDesc(user.getBranch().getId());
     }
 
+    /**
+     * Obtiene los items de una venta específica de la sucursal del usuario.
+     * Valida permisos sobre la venta.
+     * @param username Usuario SUCURSAL.
+     * @param saleId ID de la venta.
+     * @return Lista de items de la venta.
+     */
     public List<SaleItem> getSaleItemsBySaleIdForMyBranch(String username, Long saleId) {
         User user = getSucursalUser(username);
         Sale sale = saleRepository.findById(saleId)
@@ -180,6 +220,13 @@ public class BranchOperationsService {
 
         return saleItemRepository.findBySaleId(saleId);
     }
+
+    // Métodos privados auxiliares:
+    // - getSucursalUser: Valida usuario y sucursal.
+    // - getValidSaleItemForBranch: Valida item de venta para la sucursal.
+    // - validateReturnWindow: Valida tiempo máximo para devolución/cambio.
+    // - getAvailableQuantityForReturnOrExchange: Calcula cantidad disponible para devolución/cambio.
+    // - getOrCreateInventory: Obtiene o crea inventario para producto y sucursal.
 
     private User getSucursalUser(String username) {
         User user = userRepository.findByUsername(username)

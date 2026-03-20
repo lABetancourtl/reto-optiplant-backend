@@ -31,18 +31,34 @@ public class TransferController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Obtiene todas las transferencias.
+     * Solo accesible por ADMIN.
+     * Endpoint: GET /transfers
+     */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Transfer>> getAllTransfers() {
         return ResponseEntity.ok(transferService.getAllTransfers());
     }
 
+    /**
+     * Obtiene una transferencia por su ID.
+     * Accesible por ADMIN y SUCURSAL.
+     * Endpoint: GET /transfers/{id}
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
     public ResponseEntity<Transfer> getTransferById(@PathVariable Long id) {
         return ResponseEntity.ok(transferService.getTransferById(id));
     }
 
+    /**
+     * Crea una solicitud de transferencia entre sucursales.
+     * Accesible por ADMIN y SUCURSAL.
+     * Endpoint: POST /transfers
+     * Body: CreateTransferRequest
+     */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
     public ResponseEntity<Transfer> createTransferRequest(@Valid @RequestBody CreateTransferRequest request, Principal principal) {
@@ -52,10 +68,15 @@ public class TransferController {
         return ResponseEntity.ok(transfer);
     }
 
+    /**
+     * Crea transferencias de ingreso de productos (abastecimiento) a sucursales.
+     * Solo accesible por ADMIN.
+     * Endpoint: POST /transfers/inbound
+     * Body: CreateInboundTransferRequest
+     */
     @PostMapping("/inbound")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Transfer>> createInboundTransfers(@Valid @RequestBody CreateInboundTransferRequest request,
-                                                                 Principal principal) {
+    public ResponseEntity<List<Transfer>> createInboundTransfers(@Valid @RequestBody CreateInboundTransferRequest request, Principal principal) {
         Long userId = userRepository.findByUsername(principal.getName()).orElseThrow().getId();
         List<Transfer> transfers = transferService.createInboundTransfers(
                 request.productId(),
@@ -67,6 +88,12 @@ public class TransferController {
         return ResponseEntity.ok(transfers);
     }
 
+    /**
+     * Actualiza el estado de una transferencia.
+     * Solo accesible por ADMIN.
+     * Endpoint: PUT /transfers/{id}/status
+     * Body: UpdateTransferStatusRequest
+     */
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Transfer> updateTransferStatus(@PathVariable Long id, @RequestBody UpdateTransferStatusRequest request) {
@@ -74,12 +101,21 @@ public class TransferController {
         return ResponseEntity.ok(updated);
     }
 
+    /**
+     * Obtiene transferencias por estado.
+     * Solo accesible por ADMIN.
+     * Endpoint: GET /transfers/status/{status}
+     */
     @GetMapping("/status/{status}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Transfer>> getTransfersByStatus(@PathVariable TransferStatus status) {
         return ResponseEntity.ok(transferService.getTransfersByStatus(status));
     }
 
+    /**
+     * Obtiene transferencias asociadas al usuario logueado (solo SUCURSAL).
+     * Endpoint: GET /transfers/user
+     */
     @GetMapping("/user")
     @PreAuthorize("hasRole('SUCURSAL')")
     public ResponseEntity<List<Transfer>> getTransfersByUser(Principal principal) {
@@ -87,6 +123,11 @@ public class TransferController {
         return ResponseEntity.ok(transferService.getTransfersByUser(userId));
     }
 
+    /**
+     * Aprueba o rechaza una transferencia (solo SUCURSAL).
+     * Endpoint: PUT /transfers/{id}/approve-reject
+     * Body: ApproveRejectTransferRequest
+     */
     @PutMapping("/{id}/approve-reject")
     @PreAuthorize("hasRole('SUCURSAL')")
     public ResponseEntity<Transfer> approveOrRejectTransfer(@PathVariable Long id, @RequestBody ApproveRejectTransferRequest request, Principal principal) {
@@ -95,6 +136,11 @@ public class TransferController {
         return ResponseEntity.ok(updated);
     }
 
+    /**
+     * Confirma la recepción de productos de una transferencia (solo SUCURSAL).
+     * Endpoint: POST /transfers/confirm-receipt
+     * Body: ConfirmReceiptRequest
+     */
     @PostMapping("/confirm-receipt")
     @PreAuthorize("hasRole('SUCURSAL')")
     public ResponseEntity<Transfer> confirmReceipt(@RequestBody ConfirmReceiptRequest request, Principal principal) {
@@ -103,6 +149,10 @@ public class TransferController {
         return ResponseEntity.ok(updated);
     }
 
+    /**
+     * Obtiene transferencias donde la sucursal logueada es destino.
+     * Endpoint: GET /transfers/dest-branch
+     */
     @GetMapping("/dest-branch")
     @PreAuthorize("hasRole('SUCURSAL')")
     public ResponseEntity<List<Transfer>> getTransfersByDestBranch(Principal principal) {
@@ -112,6 +162,10 @@ public class TransferController {
         return ResponseEntity.ok(transferService.getTransfersByDestBranch(branchId));
     }
 
+    /**
+     * Obtiene transferencias donde la sucursal logueada es origen.
+     * Endpoint: GET /transfers/source-branch
+     */
     @GetMapping("/source-branch")
     @PreAuthorize("hasRole('SUCURSAL')")
     public ResponseEntity<List<Transfer>> getTransfersBySourceBranch(Principal principal) {

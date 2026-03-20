@@ -20,6 +20,10 @@ import com.optiplant.backend.repository.ProductRepository;
 import com.optiplant.backend.repository.TransferRepository;
 import com.optiplant.backend.repository.UserRepository;
 
+/**
+ * Servicio para gestionar transferencias de productos entre sucursales y abastecimiento.
+ * Incluye lógica para solicitudes, aprobaciones, confirmaciones, notificaciones y actualización de inventario.
+ */
 @Service
 public class TransferService {
 
@@ -44,33 +48,47 @@ public class TransferService {
         this.messagingTemplate = messagingTemplate;
     }
 
+    /**
+     * Obtiene todas las transferencias registradas.
+     * @return Lista de transferencias
+     */
     public List<Transfer> getAllTransfers() {
         return transferRepository.findAll();
     }
 
+    /**
+     * Obtiene una transferencia por su ID.
+     * @param id ID de la transferencia
+     * @return Transferencia encontrada
+     */
     public Transfer getTransferById(Long id) {
         return transferRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transfer not found"));
     }
 
+    /**
+     * Crea una solicitud de transferencia entre sucursales.
+     * Notifica a la sucursal origen y al admin.
+     * @param sourceBranchId ID de sucursal origen
+     * @param destBranchId ID de sucursal destino
+     * @param productId ID de producto
+     * @param quantity Cantidad solicitada
+     * @param requestedById ID del usuario solicitante
+     * @return Transferencia creada
+     */
     @Transactional
-    public Transfer createTransferRequest(Long sourceBranchId, Long destBranchId,
-                                          Long productId, Integer quantity, Long requestedById) {
+    public Transfer createTransferRequest(Long sourceBranchId, Long destBranchId, Long productId, Integer quantity, Long requestedById) {
         if (quantity == null || quantity <= 0) {
-            throw new RuntimeException("Quantity must be positive");
+            throw new RuntimeException("La cantidad debe ser positiva");
         }
 
-        Branch sourceBranch = branchRepository.findById(sourceBranchId)
-                .orElseThrow(() -> new RuntimeException("Source branch not found"));
-        Branch destBranch = branchRepository.findById(destBranchId)
-                .orElseThrow(() -> new RuntimeException("Destination branch not found"));
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        User requestedBy = userRepository.findById(requestedById)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Branch sourceBranch = branchRepository.findById(sourceBranchId).orElseThrow(() -> new RuntimeException("Source branch not found"));
+        Branch destBranch = branchRepository.findById(destBranchId).orElseThrow(() -> new RuntimeException("Destination branch not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        User requestedBy = userRepository.findById(requestedById).orElseThrow(() -> new RuntimeException("User not found"));
 
         if (sourceBranchId.equals(destBranchId)) {
-            throw new RuntimeException("Source and destination branches cannot be the same");
+            throw new RuntimeException("Las sucursales de origen y de destino no pueden ser las mismas");
         }
 
         Transfer transfer = new Transfer();
@@ -83,7 +101,7 @@ public class TransferService {
 
         Transfer saved = transferRepository.save(transfer);
 
-        // Notificar a sucursal origen (B) que le hicieron una solicitud
+        // Notificar a sucursal origen que le hicieron una solicitud
         messagingTemplate.convertAndSend(
                 "/topic/transfers/branch/" + sourceBranchId,
                 buildEvent(saved, "REQUESTED")
@@ -94,6 +112,16 @@ public class TransferService {
         return saved;
     }
 
+    /**
+     * Crea transferencias de ingreso de productos (abastecimiento) a una o varias sucursales.
+     * Notifica a cada sucursal destino y al admin.
+     * @param productId ID de producto
+     * @param quantity Cantidad a ingresar
+     * @param destinationBranchIds Lista de sucursales destino
+     * @param allBranches Si es true, envía a todas las sucursales
+     * @param requestedById ID del usuario admin
+     * @return Lista de transferencias creadas
+     */
     @Transactional
     public List<Transfer> createInboundTransfers(Long productId,
                                                  Integer quantity,
@@ -101,13 +129,11 @@ public class TransferService {
                                                  Boolean allBranches,
                                                  Long requestedById) {
         if (quantity == null || quantity <= 0) {
-            throw new RuntimeException("Quantity must be positive");
+            throw new RuntimeException("La cantidad debe ser positiva.");
         }
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        User requestedBy = userRepository.findById(requestedById)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        User requestedBy = userRepository.findById(requestedById).orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean sendToAll = Boolean.TRUE.equals(allBranches);
         Set<Long> destinationIds;
@@ -155,6 +181,16 @@ public class TransferService {
         return savedTransfers;
     }
 
+    /**
+     * Aprueba o rechaza una transferencia entre sucursales.
+     * Solo la sucursal origen puede aprobar/rechazar.
+     * Notifica a la sucursal destino y al admin.
+     * @param id ID de transferencia
+     * @param status Estado nuevo (APPROVED/REJECTED)
+     * @param justification Justificación en caso de rechazo
+     * @param userId ID del usuario que aprueba/rechaza
+     * @return Transferencia actualizada
+     */
     @Transactional
     public Transfer approveOrRejectTransfer(Long id, TransferStatus status,
                                             String justification, Long userId) {
@@ -201,6 +237,15 @@ public class TransferService {
         return updated;
     }
 
+    /**
+     * Confirma la recepción de productos de una transferencia.
+     * Solo la sucursal destino puede confirmar.
+     * Actualiza inventario y notifica a sucursales y admin.
+     * @param trackingCode Código de seguimiento
+     * @param receivedQuantity Cantidad recibida
+     * @param userId ID del usuario que confirma
+     * @return Transferencia actualizada
+     */
     @Transactional
     public Transfer confirmReceipt(String trackingCode, Integer receivedQuantity, Long userId) {
         Transfer transfer = transferRepository.findByTrackingCode(trackingCode)
@@ -265,6 +310,13 @@ public class TransferService {
         return updated;
     }
 
+    /**
+     * Actualiza el estado de una transferencia.
+     * Solo ADMIN puede cambiar el estado.
+     * @param id ID de transferencia
+     * @param newStatus Estado nuevo
+     * @return Transferencia actualizada
+     */
     @Transactional
     public Transfer updateTransferStatus(Long id, TransferStatus newStatus) {
         Transfer transfer = getTransferById(id);
@@ -278,26 +330,52 @@ public class TransferService {
         return transferRepository.save(transfer);
     }
 
+    /**
+     * Obtiene transferencias donde la sucursal es origen.
+     * @param branchId ID de sucursal
+     * @return Lista de transferencias
+     */
     public List<Transfer> getTransfersBySourceBranch(Long branchId) {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new RuntimeException("Branch not found"));
         return transferRepository.findBySourceBranch(branch);
     }
 
+    /**
+     * Obtiene transferencias donde la sucursal es destino.
+     * @param branchId ID de sucursal
+     * @return Lista de transferencias
+     */
     public List<Transfer> getTransfersByDestBranch(Long branchId) {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new RuntimeException("Branch not found"));
         return transferRepository.findByDestBranch(branch);
     }
 
+    /**
+     * Obtiene transferencias por estado.
+     * @param status Estado de transferencia
+     * @return Lista de transferencias
+     */
     public List<Transfer> getTransfersByStatus(TransferStatus status) {
         return transferRepository.findByStatus(status);
     }
 
+    /**
+     * Obtiene transferencias solicitadas por un usuario.
+     * @param userId ID de usuario
+     * @return Lista de transferencias
+     */
     public List<Transfer> getTransfersByUser(Long userId) {
         return transferRepository.findByRequestedById(userId);
     }
 
+    /**
+     * Construye un evento de transferencia para notificaciones por WebSocket.
+     * @param t Transferencia
+     * @param type Tipo de evento
+     * @return DTO de evento
+     */
     private TransferEventDTO buildEvent(Transfer t, String type) {
         return new TransferEventDTO(
                 t.getId(),
@@ -313,3 +391,4 @@ public class TransferService {
         );
     }
 }
+

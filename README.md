@@ -50,5 +50,21 @@ Nota: para levantar frontend + backend + DB juntos, usar el compose de `optiplan
 - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
 ## Endpoints de autenticacion
-- `POST /auth/register`
 - `POST /auth/login`
+
+## Usuarios de prueba
+
+El sistema incluye cuentas predefinidas para facilitar el acceso en entornos de desarrollo y pruebas:
+
+- **admin**
+  - Usuario: `admin`
+  - Contraseña: `pass123`
+
+- **sucursales**
+  - Usuario: `sucursal1`
+  - Usuario: `sucursal2`
+  - Usuario: `sucursalcentral`
+  - Usuario: `sucursalcentral2`
+  - Contraseña para todos: `pass123`
+
+> Estas cuentas están disponibles en el entorno de desarrollo. Para producción, se recomienda cambiar las credenciales.

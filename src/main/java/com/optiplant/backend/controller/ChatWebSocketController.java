@@ -13,6 +13,15 @@ import com.optiplant.backend.service.ChatService;
 
 import jakarta.validation.Valid;
 
+/**
+ * Controlador WebSocket para el chat en tiempo real entre ADMIN y sucursales.
+ * Permite enviar mensajes usando WebSocket, facilitando comunicación instantánea.
+ * Seguridad: Solo usuarios con rol ADMIN o SUCURSAL pueden enviar mensajes.
+ * El endpoint /chat.send recibe mensajes y los procesa usando ChatService.
+ * El método sendMessage valida la sesión WebSocket y delega el envío al servicio.
+ * Los mensajes enviados se distribuyen por WebSocket a los participantes de la conversación.
+ * Utiliza @MessageMapping para recibir mensajes desde el frontend.
+ */
 @RestController
 @Validated
 public class ChatWebSocketController {
@@ -32,4 +41,3 @@ public class ChatWebSocketController {
         return chatService.sendMessage(principal.getName(), request);
     }
 }
-

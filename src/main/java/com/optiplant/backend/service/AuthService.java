@@ -14,6 +14,12 @@ import com.optiplant.backend.repository.BranchRepository;
 import com.optiplant.backend.repository.UserRepository;
 import com.optiplant.backend.configuration.security.JwtService;
 
+/**
+ * Servicio de autenticación y registro de usuarios.
+ * Gestiona el registro de nuevos usuarios (ADMIN o SUCURSAL) y el proceso de login.
+ * Utiliza codificación BCrypt para contraseñas y JWT para autenticación.
+ * Asocia usuarios a sucursales si se especifica branchId.
+ */
 @Service
 public class AuthService {
 
@@ -32,6 +38,14 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * Si no se especifica el rol, se asigna SUCURSAL por defecto.
+     * Si se especifica branchId, asocia el usuario a la sucursal.
+     * Codifica la contraseña usando BCrypt.
+     * @param request Datos de registro (userName, password, role, branchId)
+     * @return Usuario creado y persistido.
+     */
     public User register(RegisterRequest request){
 
         User user = new User();
@@ -49,6 +63,12 @@ public class AuthService {
         return userRepository.save(user);
     }
 
+    /**
+     * Autentica un usuario y genera un JWT si las credenciales son válidas.
+     * Valida usuario y contraseña, lanza excepción si son incorrectos.
+     * @param request Datos de login (userName, password)
+     * @return LoginResponse con el token JWT.
+     */
     public LoginResponse login(LoginRequest request){
 
         User user = userRepository

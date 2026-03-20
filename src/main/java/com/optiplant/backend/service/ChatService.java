@@ -24,6 +24,26 @@ import com.optiplant.backend.repository.ChatConversationRepository;
 import com.optiplant.backend.repository.ChatMessageRepository;
 import com.optiplant.backend.repository.UserRepository;
 
+/**
+ * Servicio para gestionar el chat en tiempo real entre ADMIN y sucursales.
+ * Permite crear conversaciones, enviar mensajes y consultar historiales.
+ * Utiliza WebSocket para notificar mensajes en tiempo real a los participantes.
+ * Valida roles y permisos para acceso a conversaciones.
+ *
+ * <p>
+ * Principales métodos:
+ * <ul>
+ *   <li>createAdminConversation(String username, Long branchId): Crea conversación entre ADMIN y sucursal.</li>
+ *   <li>createBranchConversation(String username, Long sourceBranchId, Long destinationBranchId): Crea conversación entre sucursales.</li>
+ *   <li>getMyConversations(String username): Obtiene todas las conversaciones del usuario.</li>
+ *   <li>getConversationMessages(String username, Long conversationId, Integer page, Integer size): Obtiene mensajes de una conversación.</li>
+ *   <li>sendMessage(String username, CreateChatMessageRequest request): Envía un mensaje en una conversación.</li>
+ * </ul>
+ * </p>
+ *
+ * @author Optiplant Backend
+ * @since 2024
+ */
 @Service
 public class ChatService {
 
@@ -48,6 +68,14 @@ public class ChatService {
         this.messagingTemplate = messagingTemplate;
     }
 
+    /**
+     * Crea una conversación entre ADMIN y una sucursal.
+     *
+     * @param username Usuario ADMIN que inicia la conversación.
+     * @param branchId Identificador de la sucursal destino.
+     * @return Conversación creada o existente.
+     * @throws RuntimeException si el usuario no es ADMIN o la sucursal no existe.
+     */
     @Transactional
     public ChatConversationResponse createAdminConversation(String username, Long branchId) {
         User requester = getUserByUsername(username);
@@ -70,6 +98,15 @@ public class ChatService {
         return toConversationResponse(conversation);
     }
 
+    /**
+     * Crea una conversación entre sucursales (ADMIN o SUCURSAL).
+     *
+     * @param username Usuario que inicia la conversación.
+     * @param sourceBranchId Identificador de la sucursal origen.
+     * @param destinationBranchId Identificador de la sucursal destino.
+     * @return Conversación creada o existente.
+     * @throws RuntimeException si los roles o sucursales no son válidos.
+     */
     @Transactional
     public ChatConversationResponse createBranchConversation(String username, Long sourceBranchId, Long destinationBranchId) {
         User requester = getUserByUsername(username);
@@ -119,6 +156,13 @@ public class ChatService {
         return toConversationResponse(conversation);
     }
 
+    /**
+     * Obtiene todas las conversaciones del usuario.
+     *
+     * @param username Usuario para el que se consultan las conversaciones.
+     * @return Lista de conversaciones.
+     * @throws RuntimeException si el rol no está autorizado.
+     */
     @Transactional(readOnly = true)
     public List<ChatConversationResponse> getMyConversations(String username) {
         User requester = getUserByUsername(username);
@@ -140,6 +184,16 @@ public class ChatService {
                 .toList();
     }
 
+    /**
+     * Obtiene los mensajes de una conversación.
+     *
+     * @param username Usuario que consulta los mensajes.
+     * @param conversationId Identificador de la conversación.
+     * @param page Página de resultados.
+     * @param size Cantidad de mensajes por página.
+     * @return Lista de mensajes de la conversación.
+     * @throws RuntimeException si el usuario no tiene acceso.
+     */
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> getConversationMessages(String username,
                                                              Long conversationId,
@@ -160,6 +214,14 @@ public class ChatService {
         return messages.getContent().stream().map(this::toMessageResponse).toList();
     }
 
+    /**
+     * Envía un mensaje en una conversación.
+     *
+     * @param username Usuario que envía el mensaje.
+     * @param request Datos del mensaje a enviar.
+     * @return Mensaje enviado.
+     * @throws RuntimeException si el usuario no tiene acceso o el contenido es vacío.
+     */
     @Transactional
     public ChatMessageResponse sendMessage(String username, CreateChatMessageRequest request) {
         User requester = getUserByUsername(username);
@@ -286,4 +348,3 @@ public class ChatService {
         );
     }
 }
-

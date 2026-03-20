@@ -16,6 +16,12 @@ import com.optiplant.backend.entity.User;
 import com.optiplant.backend.repository.BranchRepository;
 import com.optiplant.backend.repository.UserRepository;
 
+/**
+ * Controlador para la gestión de usuarios con rol SUCURSAL.
+ * Solo accesible por usuarios con rol ADMIN.
+ * Permite consultar, crear, actualizar y eliminar usuarios de sucursal.
+ * Asocia usuarios a sucursales y permite actualizar sus datos y contraseña.
+ */
 @RestController
 @RequestMapping("/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
@@ -31,6 +37,11 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Obtiene todos los usuarios con rol SUCURSAL.
+     * Solo ADMIN.
+     * @return Lista de usuarios de sucursal.
+     */
     @GetMapping
     public ResponseEntity<List<SucursalUserResponse>> getAllSucursalUsers() {
         List<User> users = userRepository.findAll().stream()
@@ -45,6 +56,12 @@ public class UserController {
         return ResponseEntity.ok(responses);
     }
 
+    /**
+     * Obtiene un usuario de sucursal por su ID.
+     * Solo ADMIN.
+     * @param id ID del usuario.
+     * @return Usuario de sucursal encontrado.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<SucursalUserResponse> getSucursalUserById(@PathVariable Long id) {
         User user = userRepository.findById(id)
@@ -57,6 +74,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Crea un nuevo usuario de sucursal.
+     * Solo ADMIN.
+     * @param request Datos para crear el usuario.
+     * @return Usuario creado.
+     */
     @PostMapping
     public ResponseEntity<User> createSucursalUser(@RequestBody CreateSucursalUserRequest request) {
         // Reuse AuthService register logic, but force role to SUCURSAL
@@ -74,6 +97,13 @@ public class UserController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * Actualiza los datos de un usuario de sucursal.
+     * Solo ADMIN.
+     * @param id ID del usuario.
+     * @param request Datos actualizados.
+     * @return Usuario actualizado.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateSucursalUser(@PathVariable Long id, @RequestBody UpdateSucursalUserRequest request) {
         User user = userRepository.findById(id)
@@ -93,6 +123,11 @@ public class UserController {
         return ResponseEntity.ok(updated);
     }
 
+    /**
+     * Elimina un usuario de sucursal por su ID.
+     * Solo ADMIN.
+     * @param id ID del usuario.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSucursalUser(@PathVariable Long id) {
         User user = userRepository.findById(id)

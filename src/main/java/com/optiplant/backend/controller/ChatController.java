@@ -22,6 +22,11 @@ import com.optiplant.backend.service.ChatService;
 
 import jakarta.validation.Valid;
 
+/**
+ * Controlador REST para el chat en tiempo real entre ADMIN y sucursales.
+ * Expone endpoints para crear conversaciones, enviar mensajes y consultar historiales.
+ * Seguridad: Solo ADMIN y SUCURSAL pueden acceder según permisos.
+ */
 @RestController
 @RequestMapping("/chat")
 @Validated
@@ -33,13 +38,24 @@ public class ChatController {
         this.chatService = chatService;
     }
 
+    /**
+     * POST /chat/conversations/admin-branch
+     * Crea una conversación entre ADMIN y una sucursal.
+     * Body: { branchId }
+     * Solo ADMIN puede acceder.
+     */
     @PostMapping("/conversations/admin-branch")
     @PreAuthorize("hasRole('ADMIN')")
-    public ChatConversationResponse createAdminBranchConversation(@Valid @RequestBody CreateAdminConversationRequest request,
-                                                                  Principal principal) {
+    public ChatConversationResponse createAdminBranchConversation(@Valid @RequestBody CreateAdminConversationRequest request, Principal principal) {
         return chatService.createAdminConversation(principal.getName(), request.branchId());
     }
 
+    /**
+     * POST /chat/conversations/branch-branch
+     * Crea conversación entre dos sucursales (o ADMIN).
+     * Body: { sourceBranchId, destinationBranchId }
+     * ADMIN o SUCURSAL pueden acceder.
+     */
     @PostMapping("/conversations/branch-branch")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
     public ChatConversationResponse createBranchConversation(@Valid @RequestBody CreateBranchConversationRequest request,
@@ -51,12 +67,23 @@ public class ChatController {
         );
     }
 
+    /**
+     * GET /chat/conversations
+     * Devuelve todas las conversaciones del usuario autenticado.
+     * ADMIN: todas; SUCURSAL: solo las de su sucursal.
+     */
     @GetMapping("/conversations")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
     public List<ChatConversationResponse> getMyConversations(Principal principal) {
         return chatService.getMyConversations(principal.getName());
     }
 
+    /**
+     * GET /chat/conversations/{conversationId}/messages
+     * Devuelve los mensajes de una conversación.
+     * Permite paginación opcional (page, size).
+     * ADMIN o SUCURSAL pueden acceder.
+     */
     @GetMapping("/conversations/{conversationId}/messages")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
     public List<ChatMessageResponse> getMessages(@PathVariable Long conversationId,
@@ -66,11 +93,15 @@ public class ChatController {
         return chatService.getConversationMessages(principal.getName(), conversationId, page, size);
     }
 
+    /**
+     * POST /chat/messages
+     * Envía un mensaje en una conversación.
+     * Body: { conversationId, content }
+     * ADMIN o SUCURSAL pueden acceder.
+     */
     @PostMapping("/messages")
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUCURSAL')")
-    public ChatMessageResponse sendMessage(@Valid @RequestBody CreateChatMessageRequest request,
-                                           Principal principal) {
+    public ChatMessageResponse sendMessage(@Valid @RequestBody CreateChatMessageRequest request, Principal principal) {
         return chatService.sendMessage(principal.getName(), request);
     }
 }
-

@@ -16,6 +16,36 @@ import com.optiplant.backend.repository.BranchRepository;
 import com.optiplant.backend.repository.InventoryRepository;
 import com.optiplant.backend.repository.ProductRepository;
 
+/**
+ * Servicio para la gestión de inventarios por sucursal.
+ * Proporciona métodos para consultar, crear, actualizar, eliminar inventarios,
+ * transferir stock entre sucursales, inicializar inventarios y emitir eventos en tiempo real.
+ *
+ * <p>
+ * Principales métodos:
+ * <ul>
+ *   <li>getAllInventories(): Obtiene todos los inventarios.</li>
+ *   <li>getInventoriesByBranch(Long branchId): Inventario de una sucursal.</li>
+ *   <li>getInventoryById(Long id): Inventario por ID.</li>
+ *   <li>createInventory(Long branchId, Long productId, Integer quantity): Crea inventario para producto/sucursal.</li>
+ *   <li>updateInventory(Long id, Integer quantity): Actualiza cantidad de inventario.</li>
+ *   <li>deleteInventory(Long id): Elimina inventario.</li>
+ *   <li>transferStock(Long sourceBranchId, Long destBranchId, Long productId, Integer quantity): Transfiere stock entre sucursales.</li>
+ *   <li>increaseStock(Long destBranchId, Long productId, Integer quantity): Aumenta stock en sucursal.</li>
+ *   <li>getInventoriesByUsername(String username): Inventario por usuario.</li>
+ *   <li>initializeInventoryForAllBranches(): Inicializa inventario en todas las sucursales.</li>
+ *   <li>initializeInventoryForBranch(Branch branch): Inicializa inventario en sucursal.</li>
+ *   <li>initializeInventoryForBranchWithZeroStock(Branch branch): Inicializa inventario en sucursal con stock cero.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Utiliza eventos en tiempo real para notificar cambios de inventario a sucursales y admin.
+ * </p>
+ *
+ * @author Optiplant Backend
+ * @since 2024
+ */
 @Service
 public class InventoryService {
 
@@ -226,3 +256,4 @@ public class InventoryService {
         messagingTemplate.convertAndSend("/topic/inventory/all", event);
     }
 }
+
